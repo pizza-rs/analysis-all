@@ -57,6 +57,9 @@ pizza-analysis-stempel = { path = "../analysis-stempel", optional = true, defaul
 # Synonym & specialized plugins
 pizza-analysis-synonym = { path = "../analysis-synonym", optional = true, default-features = false }
 
+# Auto language-detection
+pizza-analysis-auto = { path = "../analysis-auto", optional = true, default-features = false }
+
 [features]
 default = [
     "std",
@@ -67,6 +70,7 @@ default = [
     "arabic", "persian", "hindi", "bengali", "indonesian", "brazilian",
     "morfologik", "stempel",
     "synonym",
+    "auto",
 ]
 std = [
     "pizza-engine/std",
@@ -104,6 +108,7 @@ std = [
     "pizza-analysis-morfologik?/std",
     "pizza-analysis-stempel?/std",
     "pizza-analysis-synonym?/std",
+    "pizza-analysis-auto?/std",
 ]
 
 # Foundation
@@ -151,5 +156,8 @@ stempel = ["dep:pizza-analysis-stempel"]
 
 # Synonym
 synonym = ["dep:pizza-analysis-synonym"]
+
+# Auto language-detection
+auto = ["dep:pizza-analysis-auto"]
 
 [workspace]

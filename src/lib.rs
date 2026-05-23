@@ -104,6 +104,10 @@ pub fn register_all(factory: &mut AnalysisFactory) {
     // ── Synonym & Specialized Plugins ──────────────────────────────────
     #[cfg(feature = "synonym")]
     pizza_analysis_synonym::register_all(factory);
+    // ── Auto Language Detection ────────────────────────────────────────────
+    // Must be registered LAST so it can capture all language analyzers above.
+    #[cfg(feature = "auto")]
+    pizza_analysis_auto::register_all(factory);
 }
 
 /// Names of all plugins compiled into this build.
@@ -177,5 +181,7 @@ pub fn enabled_plugins() -> &'static [&'static str] {
         "pizza-analysis-stempel",
         #[cfg(feature = "synonym")]
         "pizza-analysis-synonym",
+        #[cfg(feature = "auto")]
+        "pizza-analysis-auto",
     ]
 }

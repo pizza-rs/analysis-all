@@ -5,7 +5,7 @@
 name = "pizza-analysis-all"
 version = "0.1.0"
 edition = "2021"
-description = "Meta-crate that wires every Pizza analysis plugin into AnalysisFactory."
+description = "Unified meta-crate that registers all INFINI Pizza text analysis plugins"
 license = "MIT"
 
 [dependencies]

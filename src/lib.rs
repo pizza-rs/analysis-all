@@ -2,13 +2,14 @@
 //! [`AnalysisFactory`]. Each plugin is gated behind a Cargo feature so consumers
 //! can opt out individually via `default-features = false` + selective features.
 //!
-//! ## Plugins (35 total)
+//! ## Plugins (39 total)
 //!
 //! - **Foundation**: `core`, `stemmers`, `icu`
 //! - **CJK & Asian**: `cjk`, `ik`, `jieba`, `kuromoji`, `nori`, `pinyin`, `smartcn`, `stconvert`
 //! - **European**: `english`, `french`, `german`, `spanish`, `italian`, `portuguese`,
 //!   `dutch`, `russian`, `greek`, `norwegian`, `swedish`, `finnish`, `hungarian`, `turkish`
-//! - **South/SE Asian & Other**: `arabic`, `persian`, `hindi`, `bengali`, `indonesian`, `thai`, `vietnamese`, `brazilian`
+//! - **South/SE Asian & Other**: `arabic`, `persian`, `hindi`, `bengali`, `indonesian`,
+//!   `tamil`, `telugu`, `kannada`, `malayalam`, `thai`, `vietnamese`, `brazilian`
 //! - **Dictionary-based**: `morfologik`, `stempel`
 
 #![cfg_attr(not(feature = "std"), no_std)]
@@ -92,6 +93,14 @@ pub fn register_all(factory: &mut AnalysisFactory) {
     pizza_analysis_bengali::register_all(factory);
     #[cfg(feature = "indonesian")]
     pizza_analysis_indonesian::register_all(factory);
+    #[cfg(feature = "tamil")]
+    pizza_analysis_tamil::register_all(factory);
+    #[cfg(feature = "telugu")]
+    pizza_analysis_telugu::register_all(factory);
+    #[cfg(feature = "kannada")]
+    pizza_analysis_kannada::register_all(factory);
+    #[cfg(feature = "malayalam")]
+    pizza_analysis_malayalam::register_all(factory);
     #[cfg(feature = "thai")]
     pizza_analysis_thai::register_all(factory);
     #[cfg(feature = "vietnamese")]
@@ -177,6 +186,14 @@ pub fn enabled_plugins() -> &'static [&'static str] {
         "pizza-analysis-bengali",
         #[cfg(feature = "indonesian")]
         "pizza-analysis-indonesian",
+        #[cfg(feature = "tamil")]
+        "pizza-analysis-tamil",
+        #[cfg(feature = "telugu")]
+        "pizza-analysis-telugu",
+        #[cfg(feature = "kannada")]
+        "pizza-analysis-kannada",
+        #[cfg(feature = "malayalam")]
+        "pizza-analysis-malayalam",
         #[cfg(feature = "thai")]
         "pizza-analysis-thai",
         #[cfg(feature = "vietnamese")]

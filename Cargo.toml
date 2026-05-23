@@ -48,6 +48,10 @@ pizza-analysis-persian = { path = "../analysis-persian", optional = true, defaul
 pizza-analysis-hindi = { path = "../analysis-hindi", optional = true, default-features = false }
 pizza-analysis-bengali = { path = "../analysis-bengali", optional = true, default-features = false }
 pizza-analysis-indonesian = { path = "../analysis-indonesian", optional = true, default-features = false }
+pizza-analysis-tamil = { path = "../analysis-tamil", optional = true, default-features = false }
+pizza-analysis-telugu = { path = "../analysis-telugu", optional = true, default-features = false }
+pizza-analysis-kannada = { path = "../analysis-kannada", optional = true, default-features = false }
+pizza-analysis-malayalam = { path = "../analysis-malayalam", optional = true, default-features = false }
 pizza-analysis-thai = { path = "../analysis-thai", optional = true, default-features = false }
 pizza-analysis-vietnamese = { path = "../analysis-vietnamese", optional = true, default-features = false }
 pizza-analysis-brazilian = { path = "../analysis-brazilian", optional = true, default-features = false }
@@ -69,7 +73,9 @@ default = [
     "ik", "pinyin", "jieba", "kuromoji", "nori", "smartcn", "stconvert", "cjk",
     "english", "french", "german", "spanish", "italian", "portuguese", "dutch",
     "russian", "greek", "norwegian", "swedish", "finnish", "hungarian", "turkish",
-    "arabic", "persian", "hindi", "bengali", "indonesian", "thai", "vietnamese", "brazilian",
+    "arabic", "persian", "hindi", "bengali", "indonesian",
+    "tamil", "telugu", "kannada", "malayalam",
+    "thai", "vietnamese", "brazilian",
     "morfologik", "stempel",
     "synonym",
     "auto",
@@ -106,6 +112,10 @@ std = [
     "pizza-analysis-hindi?/std",
     "pizza-analysis-bengali?/std",
     "pizza-analysis-indonesian?/std",
+    "pizza-analysis-tamil?/std",
+    "pizza-analysis-telugu?/std",
+    "pizza-analysis-kannada?/std",
+    "pizza-analysis-malayalam?/std",
     "pizza-analysis-thai?/std",
     "pizza-analysis-vietnamese?/std",
     "pizza-analysis-brazilian?/std",
@@ -152,6 +162,10 @@ persian = ["dep:pizza-analysis-persian"]
 hindi = ["dep:pizza-analysis-hindi"]
 bengali = ["dep:pizza-analysis-bengali"]
 indonesian = ["dep:pizza-analysis-indonesian"]
+tamil = ["dep:pizza-analysis-tamil"]
+telugu = ["dep:pizza-analysis-telugu"]
+kannada = ["dep:pizza-analysis-kannada"]
+malayalam = ["dep:pizza-analysis-malayalam"]
 thai = ["dep:pizza-analysis-thai"]
 vietnamese = ["dep:pizza-analysis-vietnamese"]
 brazilian = ["dep:pizza-analysis-brazilian"]

@@ -33,6 +33,7 @@ pizza_analysis_all::register_all(&mut factory);
 
 ### Key Capabilities
 
+- **🌍 Auto Language Detection** — Automatically detects the language of incoming text and delegates to the best analyzer
 - **CJK Segmentation** — IK, Jieba, SmartCN (Chinese), Kuromoji (Japanese), Nori (Korean)
 - **ICU Unicode** — UAX#29 segmentation, NFKC normalization, case folding, collation
 - **33 Snowball Stemmers** — Arabic through Yiddish, algorithmically derived
@@ -123,6 +124,75 @@ Each crate provides a complete pipeline: language-specific normalization → ext
 |:--------|:------|:------------|
 | **`morfologik`** | [analysis-morfologik](https://github.com/pizza-rs/analysis-morfologik) | Polish & Ukrainian dictionary-based lemmatization (Morfologik FSA) |
 | **`stempel`** | [analysis-stempel](https://github.com/pizza-rs/analysis-stempel) | Polish Stempel stemmer — Egothor multi-trie automaton |
+
+### Auto Language Detection
+
+| Feature | Crate | Description |
+|:--------|:------|:------------|
+| **`auto`** | [analysis-auto](https://github.com/pizza-rs/analysis-auto) | 🌍 Automatic language detection via [whatlang](https://crates.io/crates/whatlang) — routes text to the best analyzer at runtime |
+
+---
+
+## 🌍 Auto Analyzer — Language Detection at Analysis Time
+
+The `auto` analyzer removes the need to know the language of a document in advance.
+It detects the language of incoming text using [whatlang](https://crates.io/crates/whatlang)
+and delegates to the matching language-specific analyzer — all transparently.
+
+### How it works
+
+```
+Input text  →  whatlang detection  →  language + confidence
+                                          │
+                     ┌────────────────────┼────────────────────┐
+                     ▼                    ▼                    ▼
+              confidence ≥ 0.3    confidence < 0.3     no detection
+              use matched analyzer   use "standard"     use "standard"
+```
+
+### Examples
+
+```rust
+use pizza_engine::analysis::AnalysisFactory;
+
+let mut factory = AnalysisFactory::new();
+pizza_analysis_all::register_all(&mut factory);
+
+let auto = factory.get_analyzer("auto").unwrap();
+
+// English input → delegates to "english" analyzer
+let mut text = "The runners were quickly running".to_string();
+let tokens = auto.analyze_and_return_tokens(&mut text);
+// → ["runner", "quickly", "run"]  (stop words removed, KStem stemmed)
+
+// French input → delegates to "french" analyzer
+let mut text = "Les enfants jouaient dans le jardin".to_string();
+let tokens = auto.analyze_and_return_tokens(&mut text);
+// → ["enfant", "jouai", "jardin"]  (elision, stop words, light stemmer)
+
+// Chinese input → delegates to "cjk" analyzer
+let mut text = "全文搜索引擎".to_string();
+let tokens = auto.analyze_and_return_tokens(&mut text);
+// → ["全文", "文搜", "搜索", "索引", "引擎"]  (CJK bigrams)
+
+// Mixed/ambiguous input → falls back to "standard"
+let mut text = "12345".to_string();
+let tokens = auto.analyze_and_return_tokens(&mut text);
+// → ["12345"]  (standard tokenizer)
+```
+
+### When to use `auto`
+
+| Scenario | Recommendation |
+|:---------|:---------------|
+| Multilingual corpus, language unknown | ✅ Use `auto` |
+| Single-language index (e.g., all English) | Use the dedicated analyzer for best quality |
+| Mixed-language documents | ✅ Use `auto` — each field analyzed independently |
+| Short text (1–2 words) | Detection may be uncertain — `auto` falls back to `standard` |
+
+> **Note:** The `auto` analyzer must be registered **last** (after all language analyzers)
+> so it can capture them for delegation. `pizza_analysis_all::register_all()` handles
+> this automatically.
 
 ---
 
@@ -568,6 +638,8 @@ Full analysis pipelines with stop words and stemming:
 ├──────────┼───────────┼─────────────────────────────────────────┼─────────────────┤
 │   icu    │  synonym  │           morfologik · stempel           │ pinyin·stconvert│
 ├──────────┴───────────┴─────────────────────────────────────────┴─────────────────┤
+│                    🌍 auto — language detection (registered last)                 │
+├──────────────────────────────────────────────────────────────────────────────────┤
 │                              pizza-engine                                         │
 │                  AnalysisFactory · Token · Tokenizer · TokenFilter                │
 └──────────────────────────────────────────────────────────────────────────────────┘
@@ -587,6 +659,7 @@ Full analysis pipelines with stop words and stemming:
 3. **Per-Language** (21 crates): Each overrides core's basic analyzer with full pipeline
 4. **Dictionary**: `morfologik` → `stempel`
 5. **Cross-cutting**: `synonym`
+6. **Auto detection**: `auto` *(must be last — captures all analyzers above)*
 
 ---
 
@@ -629,6 +702,7 @@ Full analysis pipelines with stop words and stemming:
 | `brazilian` | ✅ | Brazilian Portuguese analysis |
 | `morfologik` | ✅ | Polish/Ukrainian lemmatization |
 | `stempel` | ✅ | Polish Stempel stemmer |
+| `auto` | ✅ | Auto language detection via whatlang |
 
 ---
 

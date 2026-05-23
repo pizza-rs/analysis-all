@@ -48,6 +48,7 @@ pizza-analysis-persian = { path = "../analysis-persian", optional = true, defaul
 pizza-analysis-hindi = { path = "../analysis-hindi", optional = true, default-features = false }
 pizza-analysis-bengali = { path = "../analysis-bengali", optional = true, default-features = false }
 pizza-analysis-indonesian = { path = "../analysis-indonesian", optional = true, default-features = false }
+pizza-analysis-vietnamese = { path = "../analysis-vietnamese", optional = true, default-features = false }
 pizza-analysis-brazilian = { path = "../analysis-brazilian", optional = true, default-features = false }
 
 # Dictionary-based plugins
@@ -67,7 +68,7 @@ default = [
     "ik", "pinyin", "jieba", "kuromoji", "nori", "smartcn", "stconvert", "cjk",
     "english", "french", "german", "spanish", "italian", "portuguese", "dutch",
     "russian", "greek", "norwegian", "swedish", "finnish", "hungarian", "turkish",
-    "arabic", "persian", "hindi", "bengali", "indonesian", "brazilian",
+    "arabic", "persian", "hindi", "bengali", "indonesian", "vietnamese", "brazilian",
     "morfologik", "stempel",
     "synonym",
     "auto",
@@ -104,6 +105,7 @@ std = [
     "pizza-analysis-hindi?/std",
     "pizza-analysis-bengali?/std",
     "pizza-analysis-indonesian?/std",
+    "pizza-analysis-vietnamese?/std",
     "pizza-analysis-brazilian?/std",
     "pizza-analysis-morfologik?/std",
     "pizza-analysis-stempel?/std",
@@ -148,6 +150,7 @@ persian = ["dep:pizza-analysis-persian"]
 hindi = ["dep:pizza-analysis-hindi"]
 bengali = ["dep:pizza-analysis-bengali"]
 indonesian = ["dep:pizza-analysis-indonesian"]
+vietnamese = ["dep:pizza-analysis-vietnamese"]
 brazilian = ["dep:pizza-analysis-brazilian"]
 
 # Dictionary-based

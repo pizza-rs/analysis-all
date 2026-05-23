@@ -2,13 +2,13 @@
 //! [`AnalysisFactory`]. Each plugin is gated behind a Cargo feature so consumers
 //! can opt out individually via `default-features = false` + selective features.
 //!
-//! ## Plugins (33 total)
+//! ## Plugins (34 total)
 //!
 //! - **Foundation**: `core`, `stemmers`, `icu`
 //! - **CJK & Asian**: `cjk`, `ik`, `jieba`, `kuromoji`, `nori`, `pinyin`, `smartcn`, `stconvert`
 //! - **European**: `english`, `french`, `german`, `spanish`, `italian`, `portuguese`,
 //!   `dutch`, `russian`, `greek`, `norwegian`, `swedish`, `finnish`, `hungarian`, `turkish`
-//! - **South/SE Asian & Other**: `arabic`, `persian`, `hindi`, `bengali`, `indonesian`, `brazilian`
+//! - **South/SE Asian & Other**: `arabic`, `persian`, `hindi`, `bengali`, `indonesian`, `vietnamese`, `brazilian`
 //! - **Dictionary-based**: `morfologik`, `stempel`
 
 #![cfg_attr(not(feature = "std"), no_std)]
@@ -92,6 +92,8 @@ pub fn register_all(factory: &mut AnalysisFactory) {
     pizza_analysis_bengali::register_all(factory);
     #[cfg(feature = "indonesian")]
     pizza_analysis_indonesian::register_all(factory);
+    #[cfg(feature = "vietnamese")]
+    pizza_analysis_vietnamese::register_all(factory);
     #[cfg(feature = "brazilian")]
     pizza_analysis_brazilian::register_all(factory);
 
@@ -173,6 +175,8 @@ pub fn enabled_plugins() -> &'static [&'static str] {
         "pizza-analysis-bengali",
         #[cfg(feature = "indonesian")]
         "pizza-analysis-indonesian",
+        #[cfg(feature = "vietnamese")]
+        "pizza-analysis-vietnamese",
         #[cfg(feature = "brazilian")]
         "pizza-analysis-brazilian",
         #[cfg(feature = "morfologik")]

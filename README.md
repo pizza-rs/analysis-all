@@ -5,13 +5,13 @@
 ### Multilingual Text Analysis for INFINI Pizza — Pure Rust
 
 [![Rust](https://img.shields.io/badge/Rust-nightly-orange?logo=rust)](https://www.rust-lang.org/)
-[![Plugins](https://img.shields.io/badge/plugins-33-blue)]()
+[![Plugins](https://img.shields.io/badge/plugins-39-blue)]()
 [![Languages](https://img.shields.io/badge/languages-70%2B-brightgreen)]()
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-**26 tokenizers** · **130+ token filters** · **13 normalizers** · **70+ pre-built analyzers** · **33 languages with dedicated crates**
+**27 tokenizers** · **140+ token filters** · **13 normalizers** · **70+ pre-built analyzers** · **39 language plugins**
 
-*From Arabic to Yiddish — the most comprehensive text analysis ecosystem in Rust.*
+*From Arabic to Vietnamese — the most comprehensive text analysis ecosystem in Rust.*
 
 [Getting Started](#quick-start) · [Plugin Catalog](#plugin-catalog) · [Component Reference](#component-reference) · [Architecture](#architecture)
 
@@ -21,23 +21,25 @@
 
 ## Overview
 
-`pizza-analysis-all` is the unified meta-crate for [INFINI Pizza](https://pizza.rs)'s text analysis pipeline. One function call registers **33 specialized plugins** covering every major writing system:
+`pizza-analysis-all` is the unified meta-crate for [INFINI Pizza](https://pizza.rs)'s text analysis pipeline. One function call registers **39 specialized plugins** covering every major writing system:
 
 ```rust
 use pizza_engine::analysis::AnalysisFactory;
 
 let mut factory = AnalysisFactory::new();
 pizza_analysis_all::register_all(&mut factory);
-// → 26 tokenizers, 130+ filters, 13 normalizers, 70+ analyzers ready
+// → 27 tokenizers, 140+ filters, 13 normalizers, 70+ analyzers ready
 ```
 
 ### Key Capabilities
 
 - **🌍 Auto Language Detection** — Automatically detects the language of incoming text and delegates to the best analyzer
 - **CJK Segmentation** — IK, Jieba, SmartCN (Chinese), Kuromoji (Japanese), Nori (Korean)
+- **Southeast Asian** — Vietnamese compound word tokenizer, Thai Sara Am decomposition
+- **South Asian (Indic)** — Hindi, Bengali, Tamil, Telugu, Kannada, Malayalam with dedicated normalization and stemming
 - **ICU Unicode** — UAX#29 segmentation, NFKC normalization, case folding, collation
 - **33 Snowball Stemmers** — Arabic through Yiddish, algorithmically derived
-- **21 Dedicated Language Crates** — Extended stop words, script normalization, specialized stemming
+- **27 Dedicated Language Crates** — Extended stop words, script normalization, specialized stemming
 - **Synonym Expansion** — Single-word and graph-aware multi-word synonym support
 - **Pinyin & ST Conversion** — Chinese romanization and Simplified/Traditional conversion
 - **Dictionary Lemmatization** — Polish (Morfologik + Stempel) and Ukrainian
@@ -90,8 +92,10 @@ Feature names correspond to crate names with the `pizza-analysis-` prefix stripp
 | **`pinyin`** | [analysis-pinyin](https://github.com/pizza-rs/analysis-pinyin) | Chinese → Pinyin romanization with polyphone disambiguation |
 | **`smartcn`** | [analysis-smartcn](https://github.com/pizza-rs/analysis-smartcn) | SmartCN Chinese segmentation — Viterbi algorithm + DARTS double-array trie |
 | **`stconvert`** | [analysis-stconvert](https://github.com/pizza-rs/analysis-stconvert) | Simplified ↔ Traditional Chinese conversion (CN/TW/HK/JP variants) |
+| **`vietnamese`** | [analysis-vietnamese](https://github.com/pizza-rs/analysis-vietnamese) | 🇻🇳 Vietnamese compound word tokenizer — forward maximum matching |
+| **`thai`** | [analysis-thai](https://github.com/pizza-rs/analysis-thai) | 🇹🇭 Thai Sara Am decomposition, Thai digit normalization, stop words |
 
-### Per-Language Analysis (21 crates)
+### Per-Language Analysis (27 crates)
 
 Each crate provides a complete pipeline: language-specific normalization → extended stop words → dedicated stemmer.
 
@@ -117,6 +121,10 @@ Each crate provides a complete pipeline: language-specific normalization → ext
 | **`spanish`** | [analysis-spanish](https://github.com/pizza-rs/analysis-spanish) | Light stemmer, 325 stop words |
 | **`swedish`** | [analysis-swedish](https://github.com/pizza-rs/analysis-swedish) | Snowball-style stemmer, stop words |
 | **`turkish`** | [analysis-turkish](https://github.com/pizza-rs/analysis-turkish) | Locale-aware lowercase (dotted/dotless İ/I), suffix stemmer, 261 stop words |
+| **`tamil`** | [analysis-tamil](https://github.com/pizza-rs/analysis-tamil) | 🇮🇳 Tamil digit normalization, old numeral removal, Indic normalization, stemmer, 100+ stop words |
+| **`telugu`** | [analysis-telugu](https://github.com/pizza-rs/analysis-telugu) | 🇮🇳 Telugu digit normalization, Indic normalization, stemmer, 90+ stop words |
+| **`kannada`** | [analysis-kannada](https://github.com/pizza-rs/analysis-kannada) | 🇮🇳 Kannada digit normalization, Indic normalization, stemmer, 90+ stop words |
+| **`malayalam`** | [analysis-malayalam](https://github.com/pizza-rs/analysis-malayalam) | 🇮🇳 Malayalam digit + chillu normalization, Indic normalization, 90+ stop words |
 
 ### Dictionary-Based
 
@@ -129,7 +137,7 @@ Each crate provides a complete pipeline: language-specific normalization → ext
 
 | Feature | Crate | Description |
 |:--------|:------|:------------|
-| **`auto`** | [analysis-auto](https://github.com/pizza-rs/analysis-auto) | 🌍 Automatic language detection via [whatlang](https://crates.io/crates/whatlang) — routes text to the best analyzer at runtime |
+| **`auto`** | [analysis-auto](https://github.com/pizza-rs/analysis-auto) | 🔮 Automatic language detection via [whatlang](https://crates.io/crates/whatlang) — routes text to the best analyzer at runtime, supports per-language overrides and configurable confidence threshold |
 
 ---
 
@@ -146,8 +154,10 @@ Input text  →  whatlang detection  →  language + confidence
                                           │
                      ┌────────────────────┼────────────────────┐
                      ▼                    ▼                    ▼
-              confidence ≥ 0.3    confidence < 0.3     no detection
-              use matched analyzer   use "standard"     use "standard"
+              confidence ≥ threshold  confidence < threshold  no detection
+                     │                use "standard"     use "standard"
+                     ▼
+              check overrides → use override OR default mapping
 ```
 
 ### Examples
@@ -170,10 +180,10 @@ let mut text = "Les enfants jouaient dans le jardin".to_string();
 let tokens = auto.analyze_and_return_tokens(&mut text);
 // → ["enfant", "jouai", "jardin"]  (elision, stop words, light stemmer)
 
-// Chinese input → delegates to "cjk" analyzer
+// Chinese input → delegates to "ik" analyzer
 let mut text = "全文搜索引擎".to_string();
 let tokens = auto.analyze_and_return_tokens(&mut text);
-// → ["全文", "文搜", "搜索", "索引", "引擎"]  (CJK bigrams)
+// → ["全文", "搜索引擎"]  (IK smart segmentation)
 
 // Mixed/ambiguous input → falls back to "standard"
 let mut text = "12345".to_string();
@@ -398,6 +408,12 @@ let tokens = auto.analyze_and_return_tokens(&mut text);
 | `hindi_normalization` | Devanagari character normalization |
 | `indic_normalization` | Pan-Indic script family normalization |
 | `persian_normalization` | Farsi character normalization |
+| `tamil_normalization` | Tamil digit (௦-௯→0-9) and old numeral sign removal |
+| `telugu_normalization` | Telugu digit (౦-౯→0-9) normalization |
+| `kannada_normalization` | Kannada digit (೦-೯→0-9) normalization |
+| `malayalam_normalization` | Malayalam digit (൦-൯→0-9) and chillu letter normalization |
+| `thai_normalization` | Sara Am decomposition, Thai digit (๐-๙→0-9) normalization |
+| `vietnamese_normalization` | Vietnamese Đ/đ→d normalization |
 | `romanian_normalization` | Romanian diacritic normalization |
 | `scandinavian_normalization` | Scandinavian character equivalence |
 | `scandinavian_folding` | Scandinavian character folding |
@@ -504,6 +520,12 @@ Each per-language crate registers its own stop filter with extended corpora:
 | `spanish_stop` | 325 | Snowball Spanish |
 | `swedish_stop` | — | Swedish function words |
 | `turkish_stop` | 261 | Turkish function words |
+| `tamil_stop` | 100+ | Tamil function words |
+| `telugu_stop` | 90+ | Telugu function words |
+| `kannada_stop` | 90+ | Kannada function words |
+| `malayalam_stop` | 90+ | Malayalam function words |
+| `vietnamese_stop` | 200+ | Vietnamese function words |
+| `thai_stop` | 112 | Thai function words |
 
 </details>
 
@@ -589,12 +611,15 @@ Full analysis pipelines with stop words and stemming:
 | Swahili | `swahili` | standard → lowercase → stop |
 | Swedish | `swedish` | standard → lowercase → stop → snowball |
 | Tagalog | `tagalog` | standard → lowercase → stop |
-| Tamil | `tamil` | standard → lowercase → stop → snowball |
-| Thai | `thai` | thai → lowercase → stop |
+| Tamil | `tamil` | standard → indic_normalization → tamil_normalization → lowercase → decimal_digit → stop → tamil_stem |
+| Telugu | `telugu` | standard → indic_normalization → telugu_normalization → lowercase → decimal_digit → stop → telugu_stem |
+| Thai | `thai` | thai → normalize → lowercase → stop |
 | Turkish | `turkish` | standard → turkish_lowercase → stop → snowball |
 | Ukrainian | `ukrainian` | standard → lowercase → stop → ukrainian_stem |
 | Urdu | `urdu` | standard → lowercase → stop |
-| Vietnamese | `vietnamese` | standard → lowercase → stop |
+| Vietnamese | `vietnamese` | vietnamese → normalize → stop |
+| Kannada | `kannada` | standard → indic_normalization → kannada_normalization → lowercase → decimal_digit → stop → kannada_stem |
+| Malayalam | `malayalam` | standard → indic_normalization → malayalam_normalization → lowercase → decimal_digit → stop |
 
 #### CJK & Asian Analyzers
 
@@ -631,10 +656,10 @@ Full analysis pipelines with stop words and stemming:
 │                             pizza-analysis-all                                    │
 │                       register_all(&mut AnalysisFactory)                          │
 ├──────────┬───────────┬─────────────────────────────────────────┬─────────────────┤
-│  core    │ stemmers  │          per-language (21)               │   CJK / Asian   │
+│  core    │ stemmers  │          per-language (27)               │   CJK / Asian   │
 │  60+ flt │ 33 langs  │  english · french · german · spanish    │  ik · jieba     │
-│  16 tok  │           │  arabic · hindi · persian · greek ...   │  kuromoji · nori│
-│  65 anlz │           │  bengali · indonesian · brazilian ...   │  smartcn · cjk  │
+│  16 tok  │           │  arabic · hindi · tamil · telugu ...    │  kuromoji · nori│
+│  65 anlz │           │  bengali · vietnamese · thai · ...      │  smartcn · cjk  │
 ├──────────┼───────────┼─────────────────────────────────────────┼─────────────────┤
 │   icu    │  synonym  │           morfologik · stempel           │ pinyin·stconvert│
 ├──────────┴───────────┴─────────────────────────────────────────┴─────────────────┤
@@ -656,7 +681,7 @@ Full analysis pipelines with stop words and stemming:
 
 1. **Foundation**: `core` → `stemmers` → `icu`
 2. **CJK & Asian**: `cjk` → `ik` → `jieba` → `kuromoji` → `nori` → `pinyin` → `smartcn` → `stconvert`
-3. **Per-Language** (21 crates): Each overrides core's basic analyzer with full pipeline
+3. **Per-Language** (27 crates): Each overrides core's basic analyzer with full pipeline
 4. **Dictionary**: `morfologik` → `stempel`
 5. **Cross-cutting**: `synonym`
 6. **Auto detection**: `auto` *(must be last — captures all analyzers above)*
@@ -699,6 +724,12 @@ Full analysis pipelines with stop words and stemming:
 | `hindi` | ✅ | Hindi analysis |
 | `bengali` | ✅ | Bengali analysis |
 | `indonesian` | ✅ | Indonesian analysis |
+| `vietnamese` | ✅ | Vietnamese analysis |
+| `thai` | ✅ | Thai analysis |
+| `tamil` | ✅ | Tamil analysis |
+| `telugu` | ✅ | Telugu analysis |
+| `kannada` | ✅ | Kannada analysis |
+| `malayalam` | ✅ | Malayalam analysis |
 | `brazilian` | ✅ | Brazilian Portuguese analysis |
 | `morfologik` | ✅ | Polish/Ukrainian lemmatization |
 | `stempel` | ✅ | Polish Stempel stemmer |

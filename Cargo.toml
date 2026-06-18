@@ -12,59 +12,59 @@ license = "MIT"
 pizza-engine = { path = "../../lib/engine" }
 
 # Foundation plugins
-pizza-analysis-core = { path = "../analysis-core", optional = true, default-features = false }
-pizza-analysis-stemmers = { path = "../analysis-stemmers", optional = true, default-features = false }
-pizza-analysis-icu = { path = "../analysis-icu", optional = true, default-features = false }
+pizza-analysis-core = { path = "../analysis-core", optional = true }
+pizza-analysis-stemmers = { path = "../analysis-stemmers", optional = true }
+pizza-analysis-icu = { path = "../analysis-icu", optional = true }
 
 # CJK & Asian language plugins
-pizza-analysis-ik = { path = "../analysis-ik", optional = true, default-features = false }
-pizza-analysis-pinyin = { path = "../analysis-pinyin", optional = true, default-features = false }
-pizza-analysis-jieba = { path = "../analysis-jieba", optional = true, default-features = false }
-pizza-analysis-kuromoji = { path = "../analysis-kuromoji", optional = true, default-features = false }
-pizza-analysis-nori = { path = "../analysis-nori", optional = true, default-features = false }
-pizza-analysis-smartcn = { path = "../analysis-smartcn", optional = true, default-features = false }
-pizza-analysis-stconvert = { path = "../analysis-stconvert", optional = true, default-features = false, features = ["engine"] }
-pizza-analysis-cjk = { path = "../analysis-cjk", optional = true, default-features = false }
+pizza-analysis-ik = { path = "../analysis-ik", optional = true }
+pizza-analysis-pinyin = { path = "../analysis-pinyin", optional = true }
+pizza-analysis-jieba = { path = "../analysis-jieba", optional = true }
+pizza-analysis-kuromoji = { path = "../analysis-kuromoji", optional = true }
+pizza-analysis-nori = { path = "../analysis-nori", optional = true }
+pizza-analysis-smartcn = { path = "../analysis-smartcn", optional = true }
+pizza-analysis-stconvert = { path = "../analysis-stconvert", optional = true, features = ["engine"] }
+pizza-analysis-cjk = { path = "../analysis-cjk", optional = true }
 
 # European language plugins
-pizza-analysis-english = { path = "../analysis-english", optional = true, default-features = false }
-pizza-analysis-french = { path = "../analysis-french", optional = true, default-features = false }
-pizza-analysis-german = { path = "../analysis-german", optional = true, default-features = false }
-pizza-analysis-spanish = { path = "../analysis-spanish", optional = true, default-features = false }
-pizza-analysis-italian = { path = "../analysis-italian", optional = true, default-features = false }
-pizza-analysis-portuguese = { path = "../analysis-portuguese", optional = true, default-features = false }
-pizza-analysis-dutch = { path = "../analysis-dutch", optional = true, default-features = false }
-pizza-analysis-russian = { path = "../analysis-russian", optional = true, default-features = false }
-pizza-analysis-greek = { path = "../analysis-greek", optional = true, default-features = false }
-pizza-analysis-norwegian = { path = "../analysis-norwegian", optional = true, default-features = false }
-pizza-analysis-swedish = { path = "../analysis-swedish", optional = true, default-features = false }
-pizza-analysis-finnish = { path = "../analysis-finnish", optional = true, default-features = false }
-pizza-analysis-hungarian = { path = "../analysis-hungarian", optional = true, default-features = false }
-pizza-analysis-turkish = { path = "../analysis-turkish", optional = true, default-features = false }
+pizza-analysis-english = { path = "../analysis-english", optional = true }
+pizza-analysis-french = { path = "../analysis-french", optional = true }
+pizza-analysis-german = { path = "../analysis-german", optional = true }
+pizza-analysis-spanish = { path = "../analysis-spanish", optional = true }
+pizza-analysis-italian = { path = "../analysis-italian", optional = true }
+pizza-analysis-portuguese = { path = "../analysis-portuguese", optional = true }
+pizza-analysis-dutch = { path = "../analysis-dutch", optional = true }
+pizza-analysis-russian = { path = "../analysis-russian", optional = true }
+pizza-analysis-greek = { path = "../analysis-greek", optional = true }
+pizza-analysis-norwegian = { path = "../analysis-norwegian", optional = true }
+pizza-analysis-swedish = { path = "../analysis-swedish", optional = true }
+pizza-analysis-finnish = { path = "../analysis-finnish", optional = true }
+pizza-analysis-hungarian = { path = "../analysis-hungarian", optional = true }
+pizza-analysis-turkish = { path = "../analysis-turkish", optional = true }
 
 # South/Southeast Asian & other language plugins
-pizza-analysis-arabic = { path = "../analysis-arabic", optional = true, default-features = false }
-pizza-analysis-persian = { path = "../analysis-persian", optional = true, default-features = false }
-pizza-analysis-hindi = { path = "../analysis-hindi", optional = true, default-features = false }
-pizza-analysis-bengali = { path = "../analysis-bengali", optional = true, default-features = false }
-pizza-analysis-indonesian = { path = "../analysis-indonesian", optional = true, default-features = false }
-pizza-analysis-tamil = { path = "../analysis-tamil", optional = true, default-features = false }
-pizza-analysis-telugu = { path = "../analysis-telugu", optional = true, default-features = false }
-pizza-analysis-kannada = { path = "../analysis-kannada", optional = true, default-features = false }
-pizza-analysis-malayalam = { path = "../analysis-malayalam", optional = true, default-features = false }
-pizza-analysis-thai = { path = "../analysis-thai", optional = true, default-features = false }
-pizza-analysis-vietnamese = { path = "../analysis-vietnamese", optional = true, default-features = false }
-pizza-analysis-brazilian = { path = "../analysis-brazilian", optional = true, default-features = false }
+pizza-analysis-arabic = { path = "../analysis-arabic", optional = true }
+pizza-analysis-persian = { path = "../analysis-persian", optional = true }
+pizza-analysis-hindi = { path = "../analysis-hindi", optional = true }
+pizza-analysis-bengali = { path = "../analysis-bengali", optional = true }
+pizza-analysis-indonesian = { path = "../analysis-indonesian", optional = true }
+pizza-analysis-tamil = { path = "../analysis-tamil", optional = true }
+pizza-analysis-telugu = { path = "../analysis-telugu", optional = true }
+pizza-analysis-kannada = { path = "../analysis-kannada", optional = true }
+pizza-analysis-malayalam = { path = "../analysis-malayalam", optional = true }
+pizza-analysis-thai = { path = "../analysis-thai", optional = true }
+pizza-analysis-vietnamese = { path = "../analysis-vietnamese", optional = true }
+pizza-analysis-brazilian = { path = "../analysis-brazilian", optional = true }
 
 # Dictionary-based plugins
-pizza-analysis-morfologik = { path = "../analysis-morfologik", optional = true, default-features = false }
-pizza-analysis-stempel = { path = "../analysis-stempel", optional = true, default-features = false }
+pizza-analysis-morfologik = { path = "../analysis-morfologik", optional = true }
+pizza-analysis-stempel = { path = "../analysis-stempel", optional = true }
 
 # Synonym & specialized plugins
-pizza-analysis-synonym = { path = "../analysis-synonym", optional = true, default-features = false }
+pizza-analysis-synonym = { path = "../analysis-synonym", optional = true }
 
 # Auto language-detection
-pizza-analysis-auto = { path = "../analysis-auto", optional = true, default-features = false }
+pizza-analysis-auto = { path = "../analysis-auto", optional = true }
 
 [features]
 default = [

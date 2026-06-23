@@ -17,13 +17,13 @@ pizza-analysis-stemmers = { path = "../analysis-stemmers", optional = true }
 pizza-analysis-icu = { path = "../analysis-icu", optional = true }
 
 # CJK & Asian language plugins
-pizza-analysis-ik = { path = "../analysis-ik", optional = true }
-pizza-analysis-pinyin = { path = "../analysis-pinyin", optional = true }
+pizza-analysis-ik = { path = "../analysis-ik", optional = true, default-features = false, features = ["main-dict"] }
+pizza-analysis-pinyin = { path = "../analysis-pinyin", optional = true, default-features = false }
 pizza-analysis-jieba = { path = "../analysis-jieba", optional = true }
-pizza-analysis-kuromoji = { path = "../analysis-kuromoji", optional = true }
-pizza-analysis-nori = { path = "../analysis-nori", optional = true }
+pizza-analysis-kuromoji = { path = "../analysis-kuromoji", optional = true, default-features = false }
+pizza-analysis-nori = { path = "../analysis-nori", optional = true, default-features = false }
 pizza-analysis-smartcn = { path = "../analysis-smartcn", optional = true }
-pizza-analysis-stconvert = { path = "../analysis-stconvert", optional = true, features = ["engine"] }
+pizza-analysis-stconvert = { path = "../analysis-stconvert", optional = true, default-features = false, features = ["engine"] }
 pizza-analysis-cjk = { path = "../analysis-cjk", optional = true }
 
 # European language plugins
@@ -57,7 +57,7 @@ pizza-analysis-vietnamese = { path = "../analysis-vietnamese", optional = true }
 pizza-analysis-brazilian = { path = "../analysis-brazilian", optional = true }
 
 # Dictionary-based plugins
-pizza-analysis-morfologik = { path = "../analysis-morfologik", optional = true }
+pizza-analysis-morfologik = { path = "../analysis-morfologik", optional = true, default-features = false, features = ["polish"] }
 pizza-analysis-stempel = { path = "../analysis-stempel", optional = true }
 
 # Synonym & specialized plugins
@@ -80,6 +80,23 @@ default = [
     "synonym",
     "auto",
 ]
+
+# Opt in to embedding the heavy lindera dictionaries (IPADIC for kuromoji,
+# ko-dic for nori) into the binary as a fallback. Off by default to keep the
+# binary small — dictionaries are loaded from the external analysis dict
+# directory (`<dict_dir>/kuromoji/ipadic`, `<dict_dir>/nori/ko-dic`) instead.
+embed-dicts = [
+    "pizza-analysis-kuromoji?/embed-dict",
+    "pizza-analysis-nori?/embed-dict",
+    "pizza-analysis-ik?/embed",
+    "pizza-analysis-ik?/embed-fallback",
+    "pizza-analysis-pinyin?/embed",
+    "pizza-analysis-pinyin?/embed-fallback",
+    "pizza-analysis-stconvert?/embed",
+    "pizza-analysis-stconvert?/embed-fallback",
+    "pizza-analysis-morfologik?/embed-fallback",
+]
+
 std = [
     "pizza-engine/std",
     "pizza-analysis-core?/std",

@@ -1,6 +1,7 @@
 //! Comprehensive tests for pizza-analysis-all (meta-crate registering all analysis plugins).
 
-use pizza_analysis_all::{enabled_plugins, register_all};
+use pizza_analysis_all::enabled_plugins;
+use pizza_analysis_all::register_all;
 use pizza_engine::analysis::AnalysisFactory;
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -28,7 +29,10 @@ fn register_all_twice_does_not_panic() {
 #[test]
 fn enabled_plugins_not_empty() {
     let plugins = enabled_plugins();
-    assert!(!plugins.is_empty(), "at least some plugins should be enabled with default features");
+    assert!(
+        !plugins.is_empty(),
+        "at least some plugins should be enabled with default features"
+    );
 }
 
 #[test]

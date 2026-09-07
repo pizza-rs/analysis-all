@@ -17,13 +17,13 @@ pizza-analysis-stemmers = { path = "../analysis-stemmers", optional = true }
 pizza-analysis-icu = { path = "../analysis-icu", optional = true }
 
 # CJK & Asian language plugins
-pizza-analysis-ik = { path = "../analysis-ik", optional = true, default-features = false, features = ["main-dict"] }
-pizza-analysis-pinyin = { path = "../analysis-pinyin", optional = true, default-features = false }
+pizza-analysis-ik = { path = "../analysis-ik", optional = true, default-features = false, features = ["main-dict", "embed-fallback"] }
+pizza-analysis-pinyin = { path = "../analysis-pinyin", optional = true, default-features = false, features = ["embed-fallback"] }
 pizza-analysis-jieba = { path = "../analysis-jieba", optional = true }
 pizza-analysis-kuromoji = { path = "../analysis-kuromoji", optional = true, default-features = false }
 pizza-analysis-nori = { path = "../analysis-nori", optional = true, default-features = false }
 pizza-analysis-smartcn = { path = "../analysis-smartcn", optional = true }
-pizza-analysis-stconvert = { path = "../analysis-stconvert", optional = true, default-features = false, features = ["engine"] }
+pizza-analysis-stconvert = { path = "../analysis-stconvert", optional = true, default-features = false, features = ["engine", "embed-fallback"] }
 pizza-analysis-cjk = { path = "../analysis-cjk", optional = true }
 
 # European language plugins
@@ -57,7 +57,7 @@ pizza-analysis-vietnamese = { path = "../analysis-vietnamese", optional = true }
 pizza-analysis-brazilian = { path = "../analysis-brazilian", optional = true }
 
 # Dictionary-based plugins
-pizza-analysis-morfologik = { path = "../analysis-morfologik", optional = true, default-features = false, features = ["polish"] }
+pizza-analysis-morfologik = { path = "../analysis-morfologik", optional = true, default-features = false, features = ["polish", "embed-fallback"] }
 pizza-analysis-stempel = { path = "../analysis-stempel", optional = true }
 
 # Synonym & specialized plugins

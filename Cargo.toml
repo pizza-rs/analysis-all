@@ -17,13 +17,19 @@ pizza-analysis-stemmers = { path = "../analysis-stemmers", optional = true }
 pizza-analysis-icu = { path = "../analysis-icu", optional = true }
 
 # CJK & Asian language plugins
-pizza-analysis-ik = { path = "../analysis-ik", optional = true, default-features = false, features = ["main-dict", "embed-fallback"] }
-pizza-analysis-pinyin = { path = "../analysis-pinyin", optional = true, default-features = false, features = ["embed-fallback"] }
-pizza-analysis-jieba = { path = "../analysis-jieba", optional = true }
+#
+# Dictionary plugins are wired WITHOUT their embed/embed-fallback features:
+# the shipped binary stays small and every dictionary resolves at runtime
+# from the external `<config>/analysis/` directory (make
+# init-analysis-dicts). The `embed-dicts` meta-feature below re-enables the
+# in-binary copies for self-contained builds.
+pizza-analysis-ik = { path = "../analysis-ik", optional = true, default-features = false, features = ["main-dict"] }
+pizza-analysis-pinyin = { path = "../analysis-pinyin", optional = true, default-features = false }
+pizza-analysis-jieba = { path = "../analysis-jieba", optional = true, default-features = false }
 pizza-analysis-kuromoji = { path = "../analysis-kuromoji", optional = true, default-features = false }
 pizza-analysis-nori = { path = "../analysis-nori", optional = true, default-features = false }
-pizza-analysis-smartcn = { path = "../analysis-smartcn", optional = true }
-pizza-analysis-stconvert = { path = "../analysis-stconvert", optional = true, default-features = false, features = ["engine", "embed-fallback"] }
+pizza-analysis-smartcn = { path = "../analysis-smartcn", optional = true, default-features = false }
+pizza-analysis-stconvert = { path = "../analysis-stconvert", optional = true, default-features = false, features = ["engine"] }
 pizza-analysis-cjk = { path = "../analysis-cjk", optional = true }
 
 # European language plugins
@@ -57,8 +63,8 @@ pizza-analysis-vietnamese = { path = "../analysis-vietnamese", optional = true }
 pizza-analysis-brazilian = { path = "../analysis-brazilian", optional = true }
 
 # Dictionary-based plugins
-pizza-analysis-morfologik = { path = "../analysis-morfologik", optional = true, default-features = false, features = ["polish", "embed-fallback"] }
-pizza-analysis-stempel = { path = "../analysis-stempel", optional = true }
+pizza-analysis-morfologik = { path = "../analysis-morfologik", optional = true, default-features = false, features = ["polish"] }
+pizza-analysis-stempel = { path = "../analysis-stempel", optional = true, default-features = false }
 
 # Synonym & specialized plugins
 pizza-analysis-synonym = { path = "../analysis-synonym", optional = true }
@@ -81,10 +87,12 @@ default = [
     "auto",
 ]
 
-# Opt in to embedding the heavy lindera dictionaries (IPADIC for kuromoji,
-# ko-dic for nori) into the binary as a fallback. Off by default to keep the
-# binary small — dictionaries are loaded from the external analysis dict
-# directory (`<dict_dir>/kuromoji/ipadic`, `<dict_dir>/nori/ko-dic`) instead.
+# Opt in to embedding EVERY plugin dictionary (lindera IPADIC/ko-dic,
+# IK/pinyin/stconvert/morfologik text, the smartcn frequency table, the
+# stempel stemmer table, jieba's default dict) into the binary as a
+# fallback. Off by default to keep the binary small — dictionaries are
+# loaded from the external analysis dict directory
+# (`<dict_dir>/<namespace>/...`, see make init-analysis-dicts) instead.
 embed-dicts = [
     "pizza-analysis-kuromoji?/embed-dict",
     "pizza-analysis-nori?/embed-dict",
@@ -95,6 +103,9 @@ embed-dicts = [
     "pizza-analysis-stconvert?/embed",
     "pizza-analysis-stconvert?/embed-fallback",
     "pizza-analysis-morfologik?/embed-fallback",
+    "pizza-analysis-smartcn?/embed-dict",
+    "pizza-analysis-stempel?/embed-table",
+    "pizza-analysis-jieba?/default-dict",
 ]
 
 std = [

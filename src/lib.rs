@@ -210,4 +210,3 @@ pub fn enabled_plugins() -> &'static [&'static str] {
         "pizza-analysis-auto",
     ]
 }
-
